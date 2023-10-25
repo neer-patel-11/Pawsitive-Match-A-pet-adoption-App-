@@ -6,8 +6,8 @@ class MongoDBService {
   late var _db;
 
   Future<void> connect() async {
-    // final String dbUrl = 'mongodb://10.0.2.2:27017/sdp_project';
-    final String dbUrl = 'mongodb+srv://businerashop:stalkyourstock@cluster0.logjhxd.mongodb.net/sdp_project?retryWrites=true&w=majority';
+    final String dbUrl = 'mongodb://10.0.2.2:27017/sdp_project';
+    // final String dbUrl = 'mongodb+srv://businerashop:stalkyourstock@cluster0.logjhxd.mongodb.net/sdp_project?retryWrites=true&w=majority';
 
     _db = await Db.create(dbUrl);
 
@@ -81,4 +81,25 @@ class MongoDBService {
     return pet;
   }
 
-}
+  Future<bool> deletePet(ObjectId id) async{
+    print(id);
+    await connect();
+    final petsCollection = _db.collection('pets');
+    try {
+      final result = await petsCollection.deleteOne(where.eq('_id', id));
+
+      if (result != null ) {
+        // Document deleted successfully
+        return true;
+      } else {
+        // Document not found or not deleted
+        return false;
+      }
+    }
+    catch(e) {
+      print(e);
+    }
+    return false;
+    }
+  }
+

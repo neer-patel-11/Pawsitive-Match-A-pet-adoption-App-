@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sdp_project/Session.dart';
 import 'package:sdp_project/petList.dart';
+import 'package:sdp_project/profile.dart';
 import '/database/mongodb_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -113,9 +114,15 @@ class _MyRegisterState extends State<MyRegisterPet> {
           break;
         case 1:
         // Navigate to Add Pet
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => MyRegisterPet(),
+          ));
           break;
         case 2:
         // Navigate to Profile
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => Profile(),
+          ));
           break;
         case 3:
           _mongoDBService.close();

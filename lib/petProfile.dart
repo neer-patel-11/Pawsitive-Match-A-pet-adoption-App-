@@ -29,7 +29,7 @@ class _PetProfileState extends State<PetProfile> {
   late dynamic userId;
   late dynamic petData;
   late dynamic userData;
-
+  late dynamic ProfileId;
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -75,12 +75,25 @@ class _PetProfileState extends State<PetProfile> {
     } else {
       print("Problem getting user data.");
     }
+
+    try{
+
+      ProfileId = await SessionManager.getUserId() as String;
+
+      print(ProfileId);
+      print("try it");
+    }catch(e){
+      print(e);
+    }
+
   }
 
   @override
   void initState() {
     super.initState();
-    _mongoDBService.connect(); // Connect to MongoDB when the widget initializes
+    _mongoDBService.connect();
+    // Connect to MongoDB when the widget initializes
+
     getData();
   }
   @override
@@ -156,6 +169,11 @@ class _PetProfileState extends State<PetProfile> {
                       color: Colors.blue,
                     ),
                   ),
+                    if (userId == ProfileId)
+                      ElevatedButton(
+                      onPressed: () => deletePet(),
+                      child: Text('Delete From List'),
+                      ),
                   SizedBox(height: 10),
                   Text(
                     'Email: ${userData['email']}',
@@ -175,6 +193,7 @@ class _PetProfileState extends State<PetProfile> {
                   ),
                 ],
               ),
+
           ],
         ),
       ),
@@ -233,6 +252,16 @@ class _PetProfileState extends State<PetProfile> {
         },
       ),
     );
+  }
+
+  Future<void> deletePet() async{
+    print("Pet delete");
+    bool flag = await _mongoDBService.deletePet(id);
+    if(flag) {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => PetList(),
+      ));
+    }
   }
 
 }

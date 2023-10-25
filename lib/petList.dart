@@ -71,7 +71,7 @@ class _PetState extends State<PetList> {
         backgroundColor: Colors.blue,
         elevation: 0,
         title: Text(
-          'Pet List',
+          'Pawsitive Match',
           style: TextStyle(
             color: Colors.white,
           ),
